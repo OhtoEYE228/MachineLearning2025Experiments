@@ -1,0 +1,15 @@
+dataset,method,projection,intersections,zoning_4x4,zoning_8x8,global,grad_hist,skeleton,bbox_norm,ari,nmi,accuracy,macro_f1
+noise0_shift2,maxmin,Y,N,N,N,N,N,N,N,0.12711684007683213,0.36252865980156174,0.319,0.2504156619001468
+noise0_shift2,maxmin,Y,N,N,N,N,N,N,Y,1.0,1.0,1.0,1.0
+noise0_shift2,maxmin,N,Y,N,N,N,N,N,N,0.1285483851026804,0.31876928420483686,0.342,0.2689844201813414
+noise0_shift2,maxmin,N,Y,N,N,N,N,N,Y,1.0,1.0,1.0,1.0
+noise0_shift2,maxmin,N,N,Y,N,N,N,N,N,0.18191022029873347,0.41122687731670154,0.425,0.3836280870793893
+noise0_shift2,maxmin,N,N,Y,N,N,N,N,Y,1.0,1.0,1.0,1.0
+noise0_shift2,maxmin,N,N,N,Y,N,N,N,N,0.2261817914041209,0.4488655219435885,0.432,0.391682199071975
+noise0_shift2,maxmin,N,N,N,Y,N,N,N,Y,1.0,1.0,1.0,1.0
+noise0_shift2,maxmin,N,N,N,N,Y,N,N,N,0.11176739354842107,0.29833320991256806,0.331,0.2873418383382199
+noise0_shift2,maxmin,N,N,N,N,Y,N,N,Y,1.0,1.0,1.0,1.0
+noise0_shift2,maxmin,N,N,N,N,N,Y,N,N,1.0,1.0,1.0,1.0
+noise0_shift2,maxmin,N,N,N,N,N,Y,N,Y,1.0,1.0,1.0,1.0
+noise0_shift2,maxmin,N,N,N,N,N,N,Y,N,1.0,1.0,1.0,1.0
+noise0_shift2,maxmin,N,N,N,N,N,N,Y,Y,1.0,1.0,1.0,1.0

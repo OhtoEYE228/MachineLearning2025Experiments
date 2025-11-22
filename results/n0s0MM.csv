@@ -1,0 +1,8 @@
+dataset,method,projection,intersections,zoning_4x4,zoning_8x8,global,grad_hist,skeleton,bbox_norm,ari,nmi,accuracy,macro_f1
+noise0_shift0,maxmin,Y,N,N,N,N,N,N,N,1.0,1.0,1.0,1.0
+noise0_shift0,maxmin,N,Y,N,N,N,N,N,N,1.0,1.0,1.0,1.0
+noise0_shift0,maxmin,N,N,Y,N,N,N,N,N,1.0,1.0,1.0,1.0
+noise0_shift0,maxmin,N,N,N,Y,N,N,N,N,1.0,1.0,1.0,1.0
+noise0_shift0,maxmin,N,N,N,N,Y,N,N,N,1.0,1.0,1.0,1.0
+noise0_shift0,maxmin,N,N,N,N,N,Y,N,N,1.0,1.0,1.0,1.0
+noise0_shift0,maxmin,N,N,N,N,N,N,Y,N,1.0,1.0,1.0,1.0
