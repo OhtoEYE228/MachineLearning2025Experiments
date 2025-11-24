@@ -273,7 +273,7 @@ def make_feature_fns():
     """
     return {
         "projection": lambda img: extract_projection_features(img),
-        "intersections": lambda img: extract_line_intersection_features(img, num_lines=1),
+        "intersections": lambda img: extract_line_intersection_features(img, num_lines=8),
         "zoning_4x4": lambda img: extract_zoning_features(img, grid_size=(4, 4)),
         "zoning_8x8": lambda img: extract_zoning_features(img, grid_size=(8, 8)),
         "global": lambda img: extract_global_shape_features(img),

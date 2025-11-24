@@ -17,7 +17,7 @@ from sklearn.preprocessing import StandardScaler  # 可选：特征标准化
 
 DATASET_CONFIGS = [
 
-    {"name": "noise01_shift0",   "dir": "data/digits/noise01_shift0"},
+    {"name": "noise0_shift0",   "dir": "data/digits/noise0_shift0"},
 
 ]
 
@@ -81,8 +81,8 @@ FEATURE_CONFIGS_MANUAL = [
 ]
 
 # 聚类方法
-# METHODS_TO_RUN = ["kmeans", "maxmin", "agglomerative"]  # 你也可以加 "agglomerative"
-METHODS_TO_RUN = ["maxmin"]  # 你也可以加 "agglomerative"
+METHODS_TO_RUN = ["kmeans", "maxmin", "agglomerative"]  # 你也可以加 "agglomerative"
+# METHODS_TO_RUN = ["maxmin"]  # 你也可以加 "agglomerative"
 DIGITS = list(range(10))
 IMAGE_SIZE = 32
 RANDOM_STATE = 0
