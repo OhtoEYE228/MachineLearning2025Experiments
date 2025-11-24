@@ -29,22 +29,13 @@ ALL_FEATURE_NAMES = [
     "zoning_8x8",
     "global",
     "grad_hist",
-    "skeleton",
 ]
 
 # 是否自动生成所有特征组合
 USE_AUTO_FEATURE_CONFIGS = True
 
 # 自动生成组合时使用的特征子集
-# FEATURES_FOR_AUTO_COMBO = [
-#     "projection",
-#     "intersections",
-#     "zoning_4x4",
-#     "zoning_8x8",
-#     "global",
-#     "grad_hist",
-#     "skeleton",
-# ]
+
 
 FEATURES_FOR_AUTO_COMBO = [
     "projection",

@@ -98,7 +98,7 @@ def main():
     USE_BBOX_NORM = False   # 或 True，增强平移鲁棒性
 
     # 聚类方法
-    methods_to_run = ["maxmin"]   
+    methods_to_run = ["kmeans"]   
     n_clusters = 10
     random_state = 0
 

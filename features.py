@@ -1,7 +1,7 @@
 # features.py
 import numpy as np
 from PIL import Image
-from skimage.morphology import skeletonize
+
 
 def crop_and_resize_to_square(img_arr, out_size=32, threshold=0.3, margin=1):
     """
@@ -28,7 +28,7 @@ def crop_and_resize_to_square(img_arr, out_size=32, threshold=0.3, margin=1):
     x0 = max(0, x0 - margin)
     x1 = min(w - 1, x1 + margin)
 
-    roi = img_arr[y0:y1+1, x0:x1+1]
+    roi = img_arr[y0:y1 + 1, x0:x1 + 1]
 
     # pad 成近似正方形
     rh, rw = roi.shape
@@ -56,6 +56,7 @@ def crop_and_resize_to_square(img_arr, out_size=32, threshold=0.3, margin=1):
 
 
 # --------- 各种特征 ----------
+
 def extract_projection_features(img_arr):
     """
     投影直方图特征：
@@ -70,47 +71,6 @@ def extract_projection_features(img_arr):
     feat = feat / total
     return feat.astype(np.float32)
 
-def extract_skeleton_features(img_arr, threshold=0.3):
-    """
-    Skeleton 特征：
-    - 二值化 -> skeletonize 得到 1 像素宽骨架
-    - 统计：
-        endpoints: 邻居数=1 的骨架点数量
-        branchpoints: 邻居数>=3 的骨架点数量
-        length: 骨架总像素数
-    返回一个 3 维向量，简单归一化。
-    """
-    bin_img = img_arr > threshold
-    if not np.any(bin_img):
-        return np.zeros(3, dtype=np.float32)
-
-    skel = skeletonize(bin_img).astype(np.uint8)
-    h, w = skel.shape
-
-    endpoints = 0
-    branchpoints = 0
-
-    for y in range(1, h - 1):
-        for x in range(1, w - 1):
-            if skel[y, x] == 0:
-                continue
-            # 3x3 邻域
-            neighborhood = skel[y-1:y+2, x-1:x+2]
-            neighbors = neighborhood.sum() - 1  # 去掉自己
-            if neighbors == 1:
-                endpoints += 1
-            elif neighbors >= 3:
-                branchpoints += 1
-
-    length = int(skel.sum())
-
-    if length == 0:
-        return np.zeros(3, dtype=np.float32)
-
-    # 简单缩放一下，避免数值太大
-    feat = np.array([endpoints, branchpoints, length], dtype=np.float32)
-    feat = feat / (length + 1e-6)
-    return feat
 
 def extract_zoning_features(img_arr, grid_size=(4, 4)):
     """
@@ -132,6 +92,7 @@ def extract_zoning_features(img_arr, grid_size=(4, 4)):
             feats.append(block.mean())
 
     return np.array(feats, dtype=np.float32)
+
 
 def extract_grad_orientation_hist(img_arr, num_bins=8):
     """
@@ -181,7 +142,6 @@ def extract_grad_orientation_hist(img_arr, num_bins=8):
     return hist
 
 
-
 def extract_global_shape_features(img_arr, threshold=0.3):
     """
     一些全局粗特征：
@@ -198,10 +158,10 @@ def extract_global_shape_features(img_arr, threshold=0.3):
     cols = bin_img.sum(axis=0)
     total = bin_img.sum() + 1e-8
 
-    top = rows[:h//2].sum()
-    bottom = rows[h//2:].sum()
-    left = cols[:w//2].sum()
-    right = cols[w//2:].sum()
+    top = rows[:h // 2].sum()
+    bottom = rows[h // 2:].sum()
+    left = cols[:w // 2].sum()
+    right = cols[w // 2:].sum()
 
     top_ratio = top / total
     bottom_ratio = bottom / total
@@ -210,7 +170,7 @@ def extract_global_shape_features(img_arr, threshold=0.3):
 
     # 对称性：比较图像与左右翻转/上下翻转的差异
     vert_sym = 1.0 - np.mean(np.abs(img_arr - img_arr[:, ::-1]))   # 左右
-    horiz_sym = 1.0 - np.mean(np.abs(img_arr - img_arr[::-1, :])) # 上下
+    horiz_sym = 1.0 - np.mean(np.abs(img_arr - img_arr[::-1, :]))  # 上下
 
     feat = np.array([
         area,
@@ -269,16 +229,16 @@ def make_feature_fns():
     """
     把可用特征封装成一个字典，方便自由组合。
     可以按名字选用：
-      projection / intersections / zoning_4x4 / zoning_8x8 / global
+      projection / intersections / zoning_4x4 / zoning_8x8 / global / grad_hist
     """
     return {
-        "projection": lambda img: extract_projection_features(img),
+        "projection":    lambda img: extract_projection_features(img),
         "intersections": lambda img: extract_line_intersection_features(img, num_lines=8),
-        "zoning_4x4": lambda img: extract_zoning_features(img, grid_size=(4, 4)),
-        "zoning_8x8": lambda img: extract_zoning_features(img, grid_size=(8, 8)),
-        "global": lambda img: extract_global_shape_features(img),
-        "grad_hist":    lambda img: extract_grad_orientation_hist(img, num_bins=8),
-        "skeleton":     lambda img: extract_skeleton_features(img),
+        "zoning_4x4":    lambda img: extract_zoning_features(img, grid_size=(4, 4)),
+        "zoning_8x8":    lambda img: extract_zoning_features(img, grid_size=(8, 8)),
+        "global":        lambda img: extract_global_shape_features(img),
+        "grad_hist":     lambda img: extract_grad_orientation_hist(img, num_bins=8),
+        # "skeleton":   已删除，为了避免依赖 skimage.morphology.skeletonize
     }
 
 
