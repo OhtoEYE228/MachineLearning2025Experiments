@@ -56,7 +56,6 @@ def crop_and_resize_to_square(img_arr, out_size=32, threshold=0.3, margin=1):
 
 
 # --------- 各种特征 ----------
-
 def extract_projection_features(img_arr):
     """
     投影直方图特征：

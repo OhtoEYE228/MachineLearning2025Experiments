@@ -17,7 +17,7 @@ from sklearn.preprocessing import StandardScaler  # 可选：特征标准化
 
 DATASET_CONFIGS = [
 
-    {"name": "noise0_shift2",   "dir": "data/digits/noise0_shift2"},
+    {"name": "noise01_shift0",   "dir": "data/digits/noise01_shift0"},
 
 ]
 
@@ -36,6 +36,16 @@ ALL_FEATURE_NAMES = [
 USE_AUTO_FEATURE_CONFIGS = True
 
 # 自动生成组合时使用的特征子集
+# FEATURES_FOR_AUTO_COMBO = [
+#     "projection",
+#     "intersections",
+#     "zoning_4x4",
+#     "zoning_8x8",
+#     "global",
+#     "grad_hist",
+#     "skeleton",
+# ]
+
 FEATURES_FOR_AUTO_COMBO = [
     "projection",
     "intersections",
@@ -43,17 +53,18 @@ FEATURES_FOR_AUTO_COMBO = [
     "zoning_8x8",
     "global",
     "grad_hist",
-    "skeleton",
 ]
 
 # 限制组合中最多包含多少种特征（None 表示 1~全部）
-MAX_FEATURE_COMBO_SIZE = None  # 比如设为 3，则只生成 1/2/3 个特征的组合
+MAX_FEATURE_COMBO_SIZE = 1  # 比如设为 3，则只生成 1/2/3 个特征的组合
 
 # 特征组合是否使用 bbox 归一化（预处理）的选项
-PREPROCESS_OPTIONS = [False, True]
+# PREPROCESS_OPTIONS = [False, True]
+PREPROCESS_OPTIONS = [False]
 
 # 是否在拼接前按“特征块”缩放，减弱多维特征块的主导作用
-USE_BLOCK_SCALING = True
+USE_BLOCK_SCALING = False
+# USE_BLOCK_SCALING = True
 
 # 手动配置（当 USE_AUTO_FEATURE_CONFIGS=False 时才用）
 FEATURE_CONFIGS_MANUAL = [
@@ -70,8 +81,8 @@ FEATURE_CONFIGS_MANUAL = [
 ]
 
 # 聚类方法
-METHODS_TO_RUN = ["kmeans", "maxmin", "agglomerative"]  # 你也可以加 "agglomerative"
-
+# METHODS_TO_RUN = ["kmeans", "maxmin", "agglomerative"]  # 你也可以加 "agglomerative"
+METHODS_TO_RUN = ["maxmin"]  # 你也可以加 "agglomerative"
 DIGITS = list(range(10))
 IMAGE_SIZE = 32
 RANDOM_STATE = 0

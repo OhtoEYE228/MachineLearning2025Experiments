@@ -87,18 +87,18 @@ def run_one_method(
 
 def main():
     # --------- 参数区（以后你只改这里）---------
-    dataset_dir = "data/digits/noise0_shift0"
+    dataset_dir = "data/digits/noise01_shift0"
     digits = list(range(10))
     image_size = 32
 
     # 特征组合（可以随便改）
     # projection / intersections / zoning_4x4 / zoning_8x8 / global
     # FEATURES_TO_USE = ["projection", "intersections", "zoning_4x4", "global"]
-    FEATURES_TO_USE = ["projection"]
+    FEATURES_TO_USE = ["intersections"]
     USE_BBOX_NORM = False   # 或 True，增强平移鲁棒性
 
     # 聚类方法
-    methods_to_run = ["kmeans"]   # 可以加 "gmm", "spectral", "agglomerative"
+    methods_to_run = ["maxmin"]   
     n_clusters = 10
     random_state = 0
 
@@ -129,7 +129,7 @@ def main():
     # --------- 3. 提取特征 ---------
     X = build_features(
         images,
-        feature_names=FEATURES_TO_USE,
+        feature_names = FEATURES_TO_USE,
         use_bbox_norm=USE_BBOX_NORM,
         out_size=image_size
     )

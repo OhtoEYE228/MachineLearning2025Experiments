@@ -209,13 +209,13 @@ def load_dataset_from_disk(
 if __name__ == "__main__":
     # 你可以在这里调整参数
     generate_and_save_dataset(
-        output_dir="data/digits/noise0_shift2",
+        output_dir="data/digits/noise005_shift1",
         digits=range(10),
-        samples_per_digit=100,
+        samples_per_digit=10,
         image_size=32,
         font_size=28,
-        noise_level=0,  # 高斯噪声方差, 均值0
-        shift_range=2,  # 平移量
+        noise_level=0.05,  # 高斯噪声方差, 均值0
+        shift_range=1,  # 平移量
         random_seed=0,
         overwrite=True  # 已有就不覆盖
     )
