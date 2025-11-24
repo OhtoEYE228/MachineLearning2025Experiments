@@ -86,12 +86,12 @@ def run_one_method(
 
 
 def main():
-    # --------- 参数区（以后你只改这里）---------
-    dataset_dir = "data/digits/noise01_shift0"
+    # --------- 参数区
+    dataset_dir = "data/digits/noise0_shift0"
     digits = list(range(10))
     image_size = 32
 
-    # 特征组合（可以随便改）
+    # 特征组合
     # projection / intersections / zoning_4x4 / zoning_8x8 / global
     # FEATURES_TO_USE = ["projection", "intersections", "zoning_4x4", "global"]
     FEATURES_TO_USE = ["intersections"]
