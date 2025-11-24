@@ -72,34 +72,56 @@ def get_center_xy(draw, text, font, image_size):
 def generate_digit_image(
     digit,
     image_size=32,
-    font_size=28,
+    font_size=30,
     noise_level=0.1,
-    shift_range=3
+    shift_range=3,
+    rng=None,
+    binarize=False,        # 新增：是否二值化
+    bin_thresh=0.5,        # 新增：二值化阈值
 ):
+    if rng is None:
+        rng = np.random.RandomState()
+
+    # 1. 创建空画布
     img = Image.new("L", (image_size, image_size), color=0)
     draw = ImageDraw.Draw(img)
-    font = get_font(font_size)
+
+    # 2. 载入字体（Times New Roman，失败就用默认）
+    try:
+        font = ImageFont.truetype("Times New Roman.ttf", font_size)
+    except OSError:
+        try:
+            font = ImageFont.truetype("times.ttf", font_size)
+        except OSError:
+            font = ImageFont.load_default()
 
     text = str(digit)
 
-    # ✅ 精确居中坐标（不带随机位移）
-    cx, cy = get_center_xy(draw, text, font, image_size)
+    bbox = font.getbbox(text)
+    tw = bbox[2] - bbox[0]
+    th = bbox[3] - bbox[1]
 
-    # ✅ 再叠加一点随机平移（如果你想完全居中，就把 shift_range 设为 0）
-    dx = np.random.randint(-shift_range, shift_range + 1)
-    dy = np.random.randint(-shift_range, shift_range + 1)
-    x = cx + dx
-    y = cy + dy
+    # 3. 随机平移
+    sx = rng.randint(-shift_range, shift_range + 1)
+    sy = rng.randint(-shift_range, shift_range + 1)
 
-    # 画白色数字
+    x = (image_size - tw) / 2 - bbox[0] + sx
+    y = (image_size - th) / 2 - bbox[1] + sy
+
+    # 4. 画数字
     draw.text((x, y), text, fill=255, font=font)
 
+    # 5. 转成数组并加噪声
     arr = np.array(img, dtype=np.float32) / 255.0
 
-    # 高斯噪声
     if noise_level > 0:
-        noise = np.random.normal(0, noise_level, size=arr.shape).astype(np.float32)
-        arr = np.clip(arr + noise, 0.0, 1.0)
+        noise = rng.normal(loc=0.0, scale=noise_level, size=arr.shape)
+        arr = arr + noise
+        arr = np.clip(arr, 0.0, 1.0)
+
+    # 6. 可选：二值化
+    if binarize:
+        arr = (arr > bin_thresh).astype(np.float32)
 
     return arr
 
@@ -116,7 +138,9 @@ def generate_and_save_dataset(
     noise_level=0.15,
     shift_range=3,
     random_seed=0,
-    overwrite=False
+    overwrite=False,
+    binarize=False,          # 新增：是否二值化
+    bin_thresh=0.5,          # 新增：二值化阈值
 ):
     """
     把数字图片生成到磁盘：
@@ -150,7 +174,9 @@ def generate_and_save_dataset(
                 image_size=image_size,
                 font_size=font_size,
                 noise_level=noise_level,
-                shift_range=shift_range
+                shift_range=shift_range,
+                binarize=binarize,      # 把选项传下去
+                bin_thresh=bin_thresh,  # 把阈值传下去
             )
             # 保存为 PNG（0~255）
             img = Image.fromarray((arr * 255).astype(np.uint8), mode="L")
@@ -209,14 +235,16 @@ def load_dataset_from_disk(
 if __name__ == "__main__":
     # 你可以在这里调整参数
     generate_and_save_dataset(
-        output_dir="data/digits/noise005_shift1",
+        output_dir="data/digits/noise0_shift5_bin",
         digits=range(10),
         samples_per_digit=10,
         image_size=32,
         font_size=28,
-        noise_level=0.05,  # 高斯噪声方差, 均值0
-        shift_range=1,  # 平移量
+        noise_level=0,  # 高斯噪声方差, 均值0
+        shift_range=5,  # 平移量
         random_seed=0,
-        overwrite=True  # 已有就不覆盖
+        overwrite=True,  # 已有就不覆盖
+        binarize=True,          # 新增：是否二值化
+        bin_thresh=0.5,          # 新增：二值化阈值
     )
     print("[digit_dataset] 运行结束。")
